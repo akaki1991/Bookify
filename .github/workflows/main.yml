@@ -1,5 +1,5 @@
 # .github/workflows/ci.yml
-name: CI - Bookify
+name: CI - Bookify API (.NET 9)
 
 on:
   pull_request:
@@ -8,33 +8,41 @@ on:
     branches: [ main, dev ]
 
 jobs:
-  build-and-test:
+  build-test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.0.x'
+    - name: Setup .NET 9
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
 
-      - name: Restore dependencies
-        run: dotnet restore
+    - name: Restore dependencies
+      run: dotnet restore
 
-      - name: Build
-        run: dotnet build --no-restore --configuration Release
+    - name: Build solution
+      run: dotnet build --no-restore --configuration Release
 
-      - name: Run Domain Unit Tests
-        run: dotnet test ./test/Bookify.Domain.UnitTests/Bookify.Domain.UnitTests.csproj --no-build --configuration Release
-      
-      - name: Run Application Unit Tests
-        run: dotnet test ./test/Bookify.Application.UnitTests/Bookify.Application.UnitTests.csproj --no-build --configuration Release
-      
-      - name: Run Integration Tests
-        run: dotnet test ./test/Bookify.Application.IntegrationTests/Bookify.Application.IntegrationTests.csproj --no-build --configuration Release
-      
-      - name: Run Functional Tests
-        run: dotnet test ./test/Bookify.Api.FunctionalTests/Bookify.Api.FunctionalTests.csproj --no-build --configuration Release
+    - name: Run Domain Unit Tests
+      run: dotnet test ./test/Bookify.Domain.UnitTests/Bookify.Domain.UnitTests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
 
-      - name: Publish
-        run: dotnet publish ./src/YourProject.WebAPI -c Release -o ./publish
+    - name: Run Application Unit Tests
+      run: dotnet test ./test/Bookify.Application.UnitTests/Bookify.Application.UnitTests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
+
+    - name: Run Integration Tests
+      run: dotnet test ./test/Bookify.Application.IntegrationTests/Bookify.Application.IntegrationTests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
+
+    - name: Run Functional Tests
+      run: dotnet test ./test/Bookify.Api.FunctionalTests/Bookify.Api.FunctionalTests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
+
+    - name: Publish Bookify API
+      run: dotnet publish ./source/Bookify.Api/Bookify.Api.csproj --configuration Release --output ./publish
+
+    - name: Upload published artifacts (optional)
+      uses: actions/upload-artifact@v4
+      with:
+        name: bookify-api-published
+        path: ./publish
