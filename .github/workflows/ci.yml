@@ -26,16 +26,16 @@ jobs:
         run: dotnet build Bookify.sln --no-restore --configuration Release
 
       - name: Run Domain Unit Tests
-        run: dotnet test ./test/Bookify.Domain.UnitTests/Bookify.Domain.UnitTests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
+        run: dotnet test ./Bookify.Domain.UnitTests/Bookify.Domain.UnitTests.csproj --no-build --configuration Release
 
       - name: Run Application Unit Tests
-        run: dotnet test ./test/Bookify.Application.UnitTests/Bookify.Application.UnitTests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
+        run: dotnet test ./Bookify.Application.UnitTests/Bookify.Application.UnitTests.csproj --no-build --configuration Release
 
       - name: Run Application Integration Tests
-        run: dotnet test ./test/Bookify.Application.IntegrationTests/Bookify.Application.IntegrationTests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
+        run: dotnet test ./Bookify.Application.IntegrationTests/Bookify.Application.IntegrationTests.csproj --no-build --configuration Release
 
       - name: Run API Functional Tests
-        run: dotnet test ./test/Bookify.Api.FunctionalTests/Bookify.Api.FunctionalTests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
+        run: dotnet test ./Bookify.Api.FunctionalTests/Bookify.Api.FunctionalTests.csproj --no-build --configuration Release
 
       - name: Publish Web API
-        run: dotnet publish ./source/Bookify.Api/Bookify.Api.csproj -c Release -o ./publish --no-restore
+        run: dotnet publish ./Bookify.Api/Bookify.Api.csproj -c Release -o ./publish --no-restore
