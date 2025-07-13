@@ -1,0 +1,40 @@
+# .github/workflows/ci.yml
+name: CI - Bookify
+
+on:
+  pull_request:
+    branches: [ main, dev ]
+  push:
+    branches: [ main, dev ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Run Domain Unit Tests
+        run: dotnet test ./test/Bookify.Domain.UnitTests/Bookify.Domain.UnitTests.csproj --no-build --configuration Release
+      
+      - name: Run Application Unit Tests
+        run: dotnet test ./test/Bookify.Application.UnitTests/Bookify.Application.UnitTests.csproj --no-build --configuration Release
+      
+      - name: Run Integration Tests
+        run: dotnet test ./test/Bookify.Application.IntegrationTests/Bookify.Application.IntegrationTests.csproj --no-build --configuration Release
+      
+      - name: Run Functional Tests
+        run: dotnet test ./test/Bookify.Api.FunctionalTests/Bookify.Api.FunctionalTests.csproj --no-build --configuration Release
+
+      - name: Publish
+        run: dotnet publish ./src/YourProject.WebAPI -c Release -o ./publish
