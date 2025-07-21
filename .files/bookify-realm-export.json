@@ -1,0 +1,43 @@
+{
+  "realm": "bookify",
+  "enabled": true,
+  "sslRequired": "external", 
+  "registrationAllowed": true,
+  "passwordPolicy": "hashIterations(27500)",
+  "clients": [
+    {
+      "clientId": "bookify-admin-client",
+      "enabled": true,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "secret": "UZDmbNxWmV4TlpaCRcju6pMRsyuV3er1",
+      "protocol": "openid-connect",
+      "attributes": {},
+      "fullScopeAllowed": true
+    },
+    {
+      "clientId": "bookify-auth-client",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "secret": "3E3yvXaYppoYBF3Ir6DgtEzADKKzSurZ",
+      "protocol": "openid-connect",
+      "attributes": {},
+      "fullScopeAllowed": true
+    }
+  ],
+  "users": [
+    {
+      "username": "service-account-bookify-admin-client",
+      "enabled": true,
+      "serviceAccountClientId": "bookify-admin-client",
+      "clientRoles": {
+        "realm-management": ["manage-users", "view-users", "query-users", "create-client"]
+      }
+    }
+  ]
+}

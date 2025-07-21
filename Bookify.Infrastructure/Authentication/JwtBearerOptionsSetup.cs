@@ -18,5 +18,13 @@ internal class JwtBearerOptionsSetup(IOptions<AuthenticationOptions> authenticat
         options.MetadataAddress = _authenticationOptions.MetadataUrl;
         options.RequireHttpsMetadata = _authenticationOptions.RequireHttpsMetaData;
         options.TokenValidationParameters.ValidIssuer = _authenticationOptions.ValidIssuer;
+        
+        //// Allow both Docker internal and external issuers for development
+        //options.TokenValidationParameters.ValidIssuers = new[]
+        //{
+        //    _authenticationOptions.ValidIssuer,
+        //    "http://localhost:18080/realms/bookify",
+        //    "http://bookify-idp:8080/realms/bookify"
+        //};
     }
 }
